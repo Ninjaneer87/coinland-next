@@ -1,7 +1,4 @@
-export const allowedOrigins =
-  process.env.NODE_ENV === "production"
-    ? ["https://ninjaneer87.github.io/coinland/*"]
-    : ["https://www.google.com/"];
+export const allowedOrigins = ["https://ninjaneer87.github.io/coinland"];
 
 export const API_URLS = {
   v1: {
