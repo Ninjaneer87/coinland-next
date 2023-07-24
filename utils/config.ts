@@ -1,4 +1,4 @@
-export const allowedOrigins = ["https://ninjaneer87.github.io/coinland"];
+export const allowedOrigins = ["https://ninjaneer87.github.io"];
 
 export const API_URLS = {
   v1: {
