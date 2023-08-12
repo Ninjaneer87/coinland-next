@@ -1,145 +1,320 @@
 type Coin = {
-  id: number;
-  name: string;
+  id: string;
   symbol: string;
-  slug: string;
-  cmc_rank: number;
-  num_market_pairs: number;
-  circulating_supply: number;
-  total_supply: number;
-  max_supply: number;
-  infinite_supply: boolean;
-  last_updated: Date;
-  date_added: Date;
-  tags: string[];
-  platform: number | null;
-  self_reported_circulating_supply: number | null;
-  self_reported_market_cap: number | null;
-  quote: {
-    USD: Currency;
-    BTC: Currency;
+  name: string;
+  asset_platform_id: string | null;
+  platforms: {
+    [key: string]: string;
   };
+  detail_platforms: {
+    [key: string]: {
+      decimal_place: number | null;
+      contract_address: string;
+    };
+  };
+  block_time_in_minutes: number;
+  hashing_algorithm: string;
+  categories: string[];
+  public_notice: string | null;
+  additional_notices: string[];
+  description: {
+    en: string;
+  };
+  links: {
+    homepage: string[];
+    blockchain_site: string[];
+    official_forum_url: string[];
+    chat_url: string[];
+    announcement_url: string[];
+    twitter_screen_name: string;
+    facebook_username: string;
+    bitcointalk_thread_identifier: number | null;
+    telegram_channel_identifier: string;
+    subreddit_url: string;
+    repos_url: {
+      github: string[];
+      bitbucket: string[];
+    };
+  };
+  image: {
+    thumb: string;
+    small: string;
+    large: string;
+  };
+  country_origin: string;
+  genesis_date: Date;
+  sentiment_votes_up_percentage: number;
+  sentiment_votes_down_percentage: number;
+  watchlist_portfolio_count: number;
+  market_cap_rank: number;
+  coingecko_rank: number;
+  coingecko_score: number;
+  developer_score: number;
+  community_score: number;
+  liquidity_score: number;
+  public_interest_score: number;
+  market_data: {
+    current_price: {
+      [key: Currency]: number;
+    };
+    total_value_locked: {
+      [key: Currency]: number;
+    } | null;
+    mcap_to_tvl_ratio: number | null;
+    fdv_to_tvl_ratio: number | null;
+    roi: number | null;
+    ath: {
+      [key: Currency]: number;
+    };
+    ath_change_percentage: {
+      [key: Currency]: number;
+    };
+    ath_date: {
+      [key: Currency]: Date;
+    };
+    atl: {
+      [key: Currency]: number;
+    };
+    atl_change_percentage: {
+      [key: Currency]: number;
+    };
+    atl_date: {
+      [key: Currency]: Date;
+    };
+    market_cap: {
+      [key: Currency]: number;
+    };
+    market_cap_rank: number;
+    fully_diluted_valuation: {
+      [key: Currency]: number;
+    } | null;
+    total_volume: {
+      [key: Currency]: number;
+    };
+    high_24h: {
+      [key: Currency]: number;
+    };
+    low_24h: {
+      [key: Currency]: number;
+    };
+    price_change_24h: number;
+    price_change_percentage_24h: number;
+    price_change_percentage_7d: number;
+    price_change_percentage_14d: number;
+    price_change_percentage_30d: number;
+    price_change_percentage_60d: number;
+    price_change_percentage_200d: number;
+    price_change_percentage_1y: number;
+    market_cap_change_24h: number;
+    market_cap_change_percentage_24h: number;
+    price_change_24h_in_currency: {
+      [key: Currency]: number;
+    };
+    price_change_percentage_1h_in_currency: {
+      [key: Currency]: number;
+    };
+    price_change_percentage_24h_in_currency: {
+      [key: Currency]: number;
+    };
+    price_change_percentage_7d_in_currency: {
+      [key: Currency]: number;
+    };
+    price_change_percentage_14d_in_currency: {
+      [key: Currency]: number;
+    };
+    price_change_percentage_30d_in_currency: {
+      [key: Currency]: number;
+    };
+    price_change_percentage_60d_in_currency: {
+      [key: Currency]: number;
+    };
+    price_change_percentage_200d_in_currency: {
+      [key: Currency]: number;
+    };
+    price_change_percentage_1y_in_currency: {
+      [key: Currency]: number;
+    };
+    market_cap_change_24h_in_currency: {
+      [key: Currency]: number;
+    };
+    market_cap_change_percentage_24h_in_currency: {
+      [key: Currency]: number;
+    };
+    total_supply: number | null;
+    max_supply: number | null;
+    circulating_supply: number | null;
+    last_updated: Date;
+  };
+  community_data: {
+    facebook_likes: number | null;
+    twitter_followers: number | null;
+    reddit_average_posts_48h: number | null;
+    reddit_average_comments_48h: number | null;
+    reddit_subscribers: number | null;
+    reddit_accounts_active_48h: number | null;
+    telegram_channel_user_count: number | null;
+  };
+  developer_data: {
+    forks: number | null;
+    stars: number | null;
+    subscribers: number | null;
+    total_issues: number | null;
+    closed_issues: number | null;
+    pull_requests_merged: number | null;
+    pull_request_contributors: number | null;
+    code_additions_deletions_4_weeks: {
+      additions: number | null;
+      deletions: number | null;
+    };
+    commit_count_4_weeks: number | null;
+    last_4_weeks_commit_activity_series: number[] | null;
+  };
+  public_interest_stats: {
+    alexa_rank: number | null;
+    bing_matches: number | null;
+  };
+  status_updates: {
+    description: string;
+    category: string;
+    created_at: Date;
+    user: string;
+    user_title: string;
+    pin: boolean;
+    project: {
+      type: string;
+      id: string;
+      name: string;
+      symbol: string;
+      image: {
+        thumb: string;
+        small: string;
+        large: string;
+      };
+    };
+  }[];
+  last_updated: Date;
 };
 
-type Currency = {
-  price: number;
-  volume_24h: number;
-  volume_change_24h: number;
-  percent_change_1h: number;
-  percent_change_24h: number;
-  percent_change_7d: number;
+type CoinItem = {
+  id: string;
+  symbol: string;
+  name: string;
+  image: string;
+  current_price: number;
   market_cap: number;
-  market_cap_dominance: number;
-  fully_diluted_market_cap: number;
+  market_cap_rank: number;
+  fully_diluted_valuation: number | null;
+  total_volume: number;
+  high_24h: number;
+  low_24h: number;
+  price_change_24h: number;
+  price_change_percentage_24h: number;
+  market_cap_change_24h: number;
+  market_cap_change_percentage_24h: number;
+  circulating_supply: number;
+  total_supply: number | null;
+  max_supply: number | null;
+  ath: number;
+  ath_change_percentage: number;
+  ath_date: Date;
+  atl: number;
+  atl_change_percentage: number;
+  atl_date: Date;
+  roi: {
+    times: number;
+    currency: string;
+    percentage: number;
+  } | null;
   last_updated: Date;
-};
-
-type CoinsResponse = {
-  data: Coin[];
-  status: Status;
-};
-
-type Status = {
-  timestamp: Date;
-  error_code: number;
-  error_message: string;
-  elapsed: number;
-  credit_count: number;
-};
-
-type MetadataResponse = {
-  data: Metadata;
-  status: Status;
-};
-
-type Metadata = {
-  urls: {
-    website: string[];
-    technical_doc: string[];
-    twitter: string[];
-    reddit: string[];
-    message_board: string[];
-    announcement: string[];
-    chat: string[];
-    explorer: string[];
-    source_code: string[];
-  };
-  logo: string;
-  id: number;
-  name: string;
-  symbol: string;
-  slug: string;
-  description: string;
-  date_added: Date;
-  date_launched: Date;
-  tags: string[];
-  platform: number | null;
-  category: string;
-};
-
-type GlobalsResponse = {
-  data: Globals;
-  status: Status & { notice: string };
 };
 
 type Globals = {
-  btc_dominance: number;
-  eth_dominance: number;
-  active_cryptocurrencies: number;
-  total_cryptocurrencies: number;
-  active_market_pairs: number;
-  active_exchanges: number;
-  total_exchanges: number;
-  last_updated: Date;
-  quote: {
+  data: {
     active_cryptocurrencies: number;
-    total_cryptocurrencies: number;
-    active_market_pairs: number;
-    active_exchanges: number;
-    total_exchanges: number;
-    eth_dominance: number;
-    btc_dominance: number;
-    eth_dominance_yesterday: number;
-    btc_dominance_yesterday: number;
-    eth_dominance_24h_percentage_change: number;
-    btc_dominance_24h_percentage_change: number;
-    defi_volume_24h: number;
-    defi_volume_24h_reported: number;
-    defi_market_cap: number;
-    defi_24h_percentage_change: number;
-    stablecoin_volume_24h: number;
-    stablecoin_volume_24h_reported: number;
-    stablecoin_market_cap: number;
-    stablecoin_24h_percentage_change: number;
-    derivatives_volume_24h: number;
-    derivatives_volume_24h_reported: number;
-    derivatives_24h_percentage_change: number;
-    quote: {
-      USD: {
-        total_market_cap: number;
-        total_volume_24h: number;
-        total_volume_24h_reported: number;
-        altcoin_volume_24h: number;
-        altcoin_volume_24h_reported: number;
-        altcoin_market_cap: number;
-        defi_volume_24h: number;
-        defi_volume_24h_reported: number;
-        defi_24h_percentage_change: number;
-        defi_market_cap: number;
-        stablecoin_volume_24h: number;
-        stablecoin_volume_24h_reported: number;
-        stablecoin_24h_percentage_change: number;
-        stablecoin_market_cap: number;
-        derivatives_volume_24h: number;
-        derivatives_volume_24h_reported: number;
-        derivatives_24h_percentage_change: number;
-        last_updated: Date;
-        total_market_cap_yesterday: number;
-        total_volume_24h_yesterday: number;
-        total_market_cap_yesterday_percentage_change: number;
-        total_volume_24h_yesterday_percentage_change: number;
-      };
+    upcoming_icos: number;
+    ongoing_icos: number;
+    ended_icos: number;
+    markets: number;
+    total_market_cap: {
+      [key: Currency]: number;
     };
-    last_updated: Date;
+    total_volume: {
+      [key: Currency]: number;
+    };
+    market_cap_percentage: {
+      [key: Currency]: number;
+    };
+    market_cap_change_percentage_24h_usd: number;
+    updated_at: Date;
   };
 };
+
+type ErrorStatus = {
+  status: {
+    error_code: number;
+    error_message: string;
+  };
+};
+
+type Currency =
+  | "aed"
+  | "ars"
+  | "aud"
+  | "bch"
+  | "bdt"
+  | "bhd"
+  | "bmd"
+  | "bnb"
+  | "brl"
+  | "btc"
+  | "cad"
+  | "chf"
+  | "clp"
+  | "cny"
+  | "czk"
+  | "dkk"
+  | "dot"
+  | "eos"
+  | "eth"
+  | "eur"
+  | "gbp"
+  | "hkd"
+  | "huf"
+  | "idr"
+  | "ils"
+  | "inr"
+  | "jpy"
+  | "krw"
+  | "kwd"
+  | "lkr"
+  | "ltc"
+  | "mmk"
+  | "mxn"
+  | "myr"
+  | "ngn"
+  | "nok"
+  | "nzd"
+  | "php"
+  | "pkr"
+  | "pln"
+  | "rub"
+  | "sar"
+  | "sek"
+  | "sgd"
+  | "thb"
+  | "try"
+  | "twd"
+  | "uah"
+  | "usd"
+  | "vef"
+  | "vnd"
+  | "xag"
+  | "xau"
+  | "xdr"
+  | "xlm"
+  | "xrp"
+  | "yfi"
+  | "zar"
+  | "bits"
+  | "link"
+  | "sats";

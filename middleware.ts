@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { allowedOrigins } from "./utils/config";
+import { allowedOrigins } from "./utils/constants";
 
 const isProduction = process.env.NODE_ENV === "production";
 

@@ -1,4 +1,4 @@
-import { API_URLS, allowedOrigins } from "@/utils/config";
+import { API_URLS, allowedOrigins } from "@/utils/constants";
 
 const APIKEY = process.env.APIKEY as string;
 const { coinsUrl, metadataUrl, globalsUrl } = API_URLS.v1;
@@ -10,23 +10,20 @@ const config: RequestInit = {
   },
 };
 
-export async function fetchCoins() {
+export async function getCoinsCMC() {
   const res = await fetch(`${coinsUrl}?convert=USD`, config);
-  const coins: CoinsResponse = await res.json();
-
+  const coins: CoinsResponseCMC = await res.json();
   return coins;
 }
 
-export async function fetchMetadata(ids: number[]) {
+export async function fetchMetadataCMC(ids: number[]) {
   const res = await fetch(`${metadataUrl}?id=${ids}`, config);
-  const metadata: MetadataResponse = await res.json();
-
+  const metadata: MetadataResponseCMC = await res.json();
   return metadata;
 }
 
-export async function fetchGlobals() {
+export async function fetchGlobalsCMC() {
   const res = await fetch(`${globalsUrl}?convert=USD`, config);
-  const globals: GlobalsResponse = await res.json();
-
+  const globals: GlobalsResponseCMC = await res.json();
   return globals;
 }

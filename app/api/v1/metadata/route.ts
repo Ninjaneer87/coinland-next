@@ -1,5 +1,5 @@
-import { fetchMetadata } from "@/app/lib/fetchers";
-import { responseHeaders } from "@/utils/config";
+import { fetchMetadataCMC } from "@/lib/v1/fetchers";
+import { responseHeaders } from "@/utils/constants";
 import { NextResponse } from "next/server";
 
 type RequestBody = {
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     return new Error("No ids provided");
   }
 
-  const metadata = await fetchMetadata(ids);
+  const metadata = await fetchMetadataCMC(ids);
 
   if (metadata.status.error_message) {
     return new Error(metadata.status.error_message);
