@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 const { GLOBALS } = QUERY_CLIENT_KEYS;
 
 type Props = { children: React.ReactNode };
+
 export default async function RootLayout({ children }: Props) {
   const dehydratedState = await createDehydratedState([GLOBALS], getGlobals);
 
