@@ -3,15 +3,14 @@ type Coin = {
   symbol: string;
   name: string;
   asset_platform_id: string | null;
-  platforms: {
-    [key: string]: string;
-  };
-  detail_platforms: {
-    [key: string]: {
+  platforms: Record<string, string>;
+  detail_platforms: Record<
+    string,
+    {
       decimal_place: number | null;
       contract_address: string;
-    };
-  };
+    }
+  >;
   block_time_in_minutes: number;
   hashing_algorithm: string;
   categories: string[];
@@ -54,49 +53,23 @@ type Coin = {
   liquidity_score: number;
   public_interest_score: number;
   market_data: {
-    current_price: {
-      [key: Currency]: number;
-    };
-    total_value_locked: {
-      [key: Currency]: number;
-    } | null;
+    current_price: Record<Currency, number>;
+    total_value_locked: Record<Currency, number> | null;
     mcap_to_tvl_ratio: number | null;
     fdv_to_tvl_ratio: number | null;
     roi: number | null;
-    ath: {
-      [key: Currency]: number;
-    };
-    ath_change_percentage: {
-      [key: Currency]: number;
-    };
-    ath_date: {
-      [key: Currency]: Date;
-    };
-    atl: {
-      [key: Currency]: number;
-    };
-    atl_change_percentage: {
-      [key: Currency]: number;
-    };
-    atl_date: {
-      [key: Currency]: Date;
-    };
-    market_cap: {
-      [key: Currency]: number;
-    };
+    ath: Record<Currency, number>;
+    ath_change_percentage: Record<Currency, number>;
+    ath_date: Record<Currency, Date>;
+    atl: Record<Currency, number>;
+    atl_change_percentage: Record<Currency, number>;
+    atl_date: Record<Currency, Date>;
+    market_cap: Record<Currency, number>;
     market_cap_rank: number;
-    fully_diluted_valuation: {
-      [key: Currency]: number;
-    } | null;
-    total_volume: {
-      [key: Currency]: number;
-    };
-    high_24h: {
-      [key: Currency]: number;
-    };
-    low_24h: {
-      [key: Currency]: number;
-    };
+    fully_diluted_valuation: Record<Currency, number> | null;
+    total_volume: Record<Currency, number>;
+    high_24h: Record<Currency, number>;
+    low_24h: Record<Currency, number>;
     price_change_24h: number;
     price_change_percentage_24h: number;
     price_change_percentage_7d: number;
@@ -107,39 +80,17 @@ type Coin = {
     price_change_percentage_1y: number;
     market_cap_change_24h: number;
     market_cap_change_percentage_24h: number;
-    price_change_24h_in_currency: {
-      [key: Currency]: number;
-    };
-    price_change_percentage_1h_in_currency: {
-      [key: Currency]: number;
-    };
-    price_change_percentage_24h_in_currency: {
-      [key: Currency]: number;
-    };
-    price_change_percentage_7d_in_currency: {
-      [key: Currency]: number;
-    };
-    price_change_percentage_14d_in_currency: {
-      [key: Currency]: number;
-    };
-    price_change_percentage_30d_in_currency: {
-      [key: Currency]: number;
-    };
-    price_change_percentage_60d_in_currency: {
-      [key: Currency]: number;
-    };
-    price_change_percentage_200d_in_currency: {
-      [key: Currency]: number;
-    };
-    price_change_percentage_1y_in_currency: {
-      [key: Currency]: number;
-    };
-    market_cap_change_24h_in_currency: {
-      [key: Currency]: number;
-    };
-    market_cap_change_percentage_24h_in_currency: {
-      [key: Currency]: number;
-    };
+    price_change_24h_in_currency: Record<Currency, number>;
+    price_change_percentage_1h_in_currency: Record<Currency, number>;
+    price_change_percentage_24h_in_currency: Record<Currency, number>;
+    price_change_percentage_7d_in_currency: Record<Currency, number>;
+    price_change_percentage_14d_in_currency: Record<Currency, number>;
+    price_change_percentage_30d_in_currency: Record<Currency, number>;
+    price_change_percentage_60d_in_currency: Record<Currency, number>;
+    price_change_percentage_200d_in_currency: Record<Currency, number>;
+    price_change_percentage_1y_in_currency: Record<Currency, number>;
+    market_cap_change_24h_in_currency: Record<Currency, number>;
+    market_cap_change_percentage_24h_in_currency: Record<Currency, number>;
     total_supply: number | null;
     max_supply: number | null;
     circulating_supply: number | null;
@@ -222,10 +173,13 @@ type CoinItem = {
   atl_date: Date;
   roi: {
     times: number;
-    currency: string;
+    currency: Currency;
     percentage: number;
   } | null;
   last_updated: Date;
+  sparkline_in_7d: {
+    price: number[];
+  };
 };
 
 type Globals = {
@@ -235,15 +189,9 @@ type Globals = {
     ongoing_icos: number;
     ended_icos: number;
     markets: number;
-    total_market_cap: {
-      [key: Currency]: number;
-    };
-    total_volume: {
-      [key: Currency]: number;
-    };
-    market_cap_percentage: {
-      [key: Currency]: number;
-    };
+    total_market_cap: Record<Currency, number>;
+    total_volume: Record<Currency, number>;
+    market_cap_percentage: Record<Currency, number>;
     market_cap_change_percentage_24h_usd: number;
     updated_at: Date;
   };
@@ -318,3 +266,9 @@ type Currency =
   | "bits"
   | "link"
   | "sats";
+
+type AllCoinsItem = {
+  id: string;
+  symbol: string;
+  name: string;
+};

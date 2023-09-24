@@ -1,9 +1,11 @@
-import { type } from "os";
-
 export const allowedOrigins = ["https://ninjaneer87.github.io"];
+const coinlandV2Url = "https://coinland-next.vercel.app/";
+const localhostUrl = "http://localhost:3000";
 
 const cmcApiRootUrl = "https://pro-api.coinmarketcap.com/v1";
 const geckoApiRootUrl = "https://api.coingecko.com/api/v3";
+export const baseUrl =
+  process.env.NODE_ENV === "production" ? coinlandV2Url : localhostUrl;
 
 export const API_URLS = {
   v1: {
@@ -15,6 +17,7 @@ export const API_URLS = {
     coinsUrl: `${geckoApiRootUrl}/coins/markets`,
     coinUrl: `${geckoApiRootUrl}/coins/{:id:}`,
     globalsUrl: `${geckoApiRootUrl}/global`,
+    allCoins: `${geckoApiRootUrl}/coins/list`,
   },
 };
 
@@ -40,6 +43,24 @@ export type QueryClientKeys =
 export const QUERY_PARAMS = {
   PAGE: "page",
   PER_PAGE: "per_page",
-  SEARCH: "search",
 } as const;
-export type QueryParams = (typeof QUERY_PARAMS)[keyof typeof QUERY_PARAMS];
+export type QueryParamsKeys = (typeof QUERY_PARAMS)[keyof typeof QUERY_PARAMS];
+export type SearchParams = {
+  searchParams?: Record<QueryParamsKeys, string | string[] | undefined>;
+};
+export type QueryParams = {
+  page?: string;
+  per_page?: string;
+};
+
+export const LOCAL_STORAGE_KEYS = {
+  THEME: "theme",
+  THEME_OPTION: "theme_option",
+  PAGE: "page",
+  PER_PAGE: "per_page",
+} as const;
+
+export const THEMES = ["dark", "light"] as const;
+export const THEME_OPTIONS = ["dark", "light", "system"] as const;
+export type Theme = typeof THEMES[number];
+export type ThemeOption = typeof THEME_OPTIONS[number];

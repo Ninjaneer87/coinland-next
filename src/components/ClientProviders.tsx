@@ -1,16 +1,37 @@
 "use client";
 
-// import getQueryClient from "@/lib/getQueryClient";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { NextUIProvider } from "@nextui-org/react";
+import ThemeContext from "@/context/themeContext";
+import { useDarkMode } from "@/hooks/useDarkMode";
+import { NextIntlClientProvider } from "next-intl";
+import { useTheme } from "@/hooks/useTheme";
+import { Theme, ThemeOption } from "@/utils/constants";
 
-function ClientProviders({ children }: PropsWithChildren) {
+type Props = {
+  serverTheme: Theme;
+  serverThemeOption: ThemeOption;
+  children: React.ReactNode;
+};
+function ClientProviders({ children, serverTheme, serverThemeOption }: Props) {
   const [client] = useState(new QueryClient());
+  // const [dark, toggleDarkMode] = useDarkMode(serverTheme);
+  const { theme, themeOption, setTheme } = useTheme(
+    serverTheme,
+    serverThemeOption
+  );
 
   return (
     <QueryClientProvider client={client}>
-      {children}
+      <ThemeContext.Provider value={{ theme, themeOption, setTheme }}>
+        <NextUIProvider>
+          <NextIntlClientProvider locale="en">
+            <>{children}</>
+          </NextIntlClientProvider>
+        </NextUIProvider>
+      </ThemeContext.Provider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

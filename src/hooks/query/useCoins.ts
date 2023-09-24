@@ -1,51 +1,36 @@
-import { useEffect } from "react";
+"use client";
 import { getCoins } from "@/lib/fetchers";
-import { QUERY_CLIENT_KEYS, QUERY_PARAMS } from "@/utils/constants";
+import { LOCAL_STORAGE_KEYS, QUERY_CLIENT_KEYS } from "@/utils/constants";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
-import { useStorage } from "../useStorage";
-
-const { PAGE, PER_PAGE } = QUERY_PARAMS;
-const { COINS } = QUERY_CLIENT_KEYS;
+import { useCoinsPagination } from "../useCoinsPagination";
 
 type CoinsUseQueryOptions = Omit<
   UseQueryOptions<
     CoinItem[] & ErrorStatus,
     unknown,
     CoinItem[] & ErrorStatus,
-    [typeof COINS, number, number]
+    [typeof QUERY_CLIENT_KEYS.COINS, number, number]
   >,
   "queryKey" | "queryFn"
 >;
 type CoinsParams = { page?: number; perPage?: number };
 
 function useCoins(options?: CoinsUseQueryOptions, params?: CoinsParams) {
-  const [, setPageStorage] = useStorage(PAGE, 1);
-  const [, setPerPageStorage] = useStorage(PER_PAGE, 100);
-  const searchParams = useSearchParams();
-  const pageParam = searchParams.get(PAGE);
-  const perPageParam = searchParams.get(PER_PAGE);
-  const pageParamNumber = pageParam && !isNaN(+pageParam) ? +pageParam : 1;
-  const perPageParamNumber =
-    perPageParam && !isNaN(+perPageParam) ? +perPageParam : 100;
+  const { pageParam, perPageParam } = useCoinsPagination();
 
-  const page = params?.page ?? pageParamNumber;
-  const perPage = params?.perPage ?? perPageParamNumber;
+  const page = params?.page ?? pageParam;
+  const perPage = params?.perPage ?? perPageParam;
 
-  useEffect(() => {
-    setPageStorage(page);
-    setPerPageStorage(perPage);
-  }, [page, perPage, setPageStorage, setPerPageStorage]);
+  if (typeof window !== "undefined") {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.PAGE, JSON.stringify(page));
+    localStorage.setItem(LOCAL_STORAGE_KEYS.PER_PAGE, JSON.stringify(perPage));
+  }
 
-  const { data, ...rest } = useQuery(
-    ["coins", page, perPage],
-    () => getCoins(page, perPage),
-    {
-      ...options,
-    }
-  );
-
-  return { data, ...rest };
+  return useQuery(["coins", page, perPage], () => getCoins(page, perPage), {
+    retry: 1,
+    refetchOnWindowFocus: false,
+    ...options,
+  });
 }
 
 export default useCoins;

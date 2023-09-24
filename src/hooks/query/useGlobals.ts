@@ -15,7 +15,11 @@ function useGlobals(
     "queryKey" | "queryFn"
   >
 ) {
-  return useQuery([QUERY_CLIENT_KEYS.GLOBALS], getGlobals, { ...options });
+  return useQuery([QUERY_CLIENT_KEYS.GLOBALS], getGlobals, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+    ...options,
+  });
 }
 
 export default useGlobals;

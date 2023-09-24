@@ -20,6 +20,8 @@ function useCoin(options?: CoinUseQueryOptions) {
   const id = params.id as string;
 
   return useQuery(["coin", id], () => getCoin(id), {
+    retry: 1,
+    refetchOnWindowFocus: false,
     ...options,
   });
 }

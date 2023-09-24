@@ -1,7 +1,7 @@
 import { composeUrl } from "@/utils/common";
 import { API_URLS } from "@/utils/constants";
 
-const { coinsUrl, coinUrl, globalsUrl } = API_URLS.v2;
+const { coinsUrl, coinUrl, globalsUrl, allCoins } = API_URLS.v2;
 
 export async function getCoins(page: number, perPage: number) {
   const endpoint = composeUrl(coinsUrl, {
@@ -50,5 +50,17 @@ export async function getGlobals() {
     return globals;
   } catch (error) {
     throw new Error("Failed to fetch globals");
+  }
+}
+
+export async function getAllCoins(page: number, perPage: number) {
+  const endpoint = composeUrl(allCoins);
+
+  try {
+    const res = await fetch(endpoint);
+    const coins: AllCoinsItem[] & ErrorStatus = await res.json();
+    return coins;
+  } catch (error) {
+    throw new Error("Failed to fetch all coins");
   }
 }
