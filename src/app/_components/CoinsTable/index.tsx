@@ -159,10 +159,7 @@ function CoinsTable() {
                   transform: `translateX(${-tableScrollLeft}px)`,
                 }),
             }}
-            className={`z-30 
-            ${isStickyIndex ? " sticky" : ""} ${
-              isStickyIndex && isTableScrolledRight ? "bg-background" : ""
-            } ${
+            className={`z-30 bg-background ${isStickyIndex ? " sticky" : ""} ${
               isStickyIndex && isTableScrolledRight && isLastStickyIndex
                 ? "relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-[1px] after:bg-primary"
                 : ""
@@ -191,7 +188,7 @@ function CoinsTable() {
   return (
     <>
       <NoSSR fallback={<SkeletonTable numberOfRows={20} />}>
-        <div className="overflow-x-scroll" onScroll={handleHorizontalScroll}>
+        <div className="overflow-x-auto" onScroll={handleHorizontalScroll}>
           <div className="w-full h-4" />
           <table className="mx-auto border-0">
             <thead
@@ -247,10 +244,8 @@ function CoinsTable() {
                                 : maxSize,
                             ...(isStickyIndex && { left: leftPosition }),
                           }}
-                          className={`${isStickyIndex ? "sticky" : ""} ${
-                            isStickyIndex && isTableScrolledRight
-                              ? "bg-background"
-                              : ""
+                          className={`bg-background ${
+                            isStickyIndex ? "sticky" : ""
                           } ${
                             isStickyIndex &&
                             isTableScrolledRight &&

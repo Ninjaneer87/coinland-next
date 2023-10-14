@@ -14,7 +14,6 @@ import {
   PopoverTrigger,
 } from "@nextui-org/react";
 import { THEME_OPTIONS, ThemeOption } from "@/utils/constants";
-import { disableScroll } from "@/utils/common";
 
 const themeIcons: Record<ThemeOption, React.JSX.Element> = {
   light: <IoSunny />,
@@ -30,12 +29,10 @@ function Header() {
   function handleThemePicker(option: ThemeOption) {
     setTheme(option);
     setIsOpenThemePicker(false);
-    disableScroll(false);
   }
 
   function onOpenChange(open: boolean) {
     setIsOpenThemePicker(open);
-    disableScroll(open);
   }
 
   return (
@@ -55,7 +52,6 @@ function Header() {
       <Popover
         placement="bottom-end"
         onOpenChange={onOpenChange}
-        // backdrop="blur"
         isOpen={isOpenThemePicker}
       >
         <PopoverTrigger>
