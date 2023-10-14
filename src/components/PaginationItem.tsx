@@ -15,6 +15,7 @@ const PaginationItem = ({
   onNext,
   onPrevious,
   className,
+  isActive
 }: PaginationItemRenderProps) => {
   const { nextPageUrl, prevPageUrl } = useCoinsPagination();
 
@@ -57,7 +58,10 @@ const PaginationItem = ({
       key={value}
       href={composeUrl(baseUrl, { page: `${value}` })}
       ref={ref}
-      className={twMerge(className, "bg-transparent")}
+      className={twMerge(
+        className,
+        `${isActive ? "text-primary" : ""} bg-transparent`
+      )}
     >
       {value}
     </Link>

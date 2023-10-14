@@ -39,7 +39,7 @@ export default async function RootLayout({ children }: Props) {
   return (
     <html lang="en" className={serverTheme}>
       <body
-        className={`${inter.className} bg-gradient-to-b from-background to-content3`}
+        className={`${inter.className}`}
       >
         <ClientProviders
           serverTheme={serverTheme}

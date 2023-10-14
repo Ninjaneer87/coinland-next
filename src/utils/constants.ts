@@ -62,5 +62,12 @@ export const LOCAL_STORAGE_KEYS = {
 
 export const THEMES = ["dark", "light"] as const;
 export const THEME_OPTIONS = ["dark", "light", "system"] as const;
-export type Theme = typeof THEMES[number];
-export type ThemeOption = typeof THEME_OPTIONS[number];
+export type Theme = (typeof THEMES)[number];
+export type ThemeOption = (typeof THEME_OPTIONS)[number];
+
+export const MEDIA_QUERIES = {
+  MAX_SM: "(max-width: 600px)",
+  MAX_MD: "(max-width: 900px)",
+  MAX_LG: "(max-width: 1200px)",
+  MAX_XL: "(min-width: 1600px)",
+} as const;

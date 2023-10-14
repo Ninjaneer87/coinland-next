@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
 import { commonColors } from "@nextui-org/react";
+import { useMediaQueryContext } from "@/context/mediaQueryContext";
 
 type Props = {
   data: number[];
@@ -10,10 +11,11 @@ function Sparkline({ data }: Props) {
   const minNum = useMemo(() => Math.min(...data), [data]);
   const maxNum = useMemo(() => Math.max(...data), [data]);
   const isPumping = useMemo(() => data[data.length - 1] > data[0], [data]);
+  const { maxMD } = useMediaQueryContext();
 
   useEffect(() => {
-    const w = 180;
-    const h = 70;
+    const w = maxMD ? 90 : 180;
+    const h = maxMD ? 40 : 70;
     const svg = d3
       .select(svgRef.current)
       .attr("width", w)

@@ -16,7 +16,7 @@ import {
 import { THEME_OPTIONS, ThemeOption } from "@/utils/constants";
 import { disableScroll } from "@/utils/common";
 
-const ThemeIcons: Record<ThemeOption, React.JSX.Element> = {
+const themeIcons: Record<ThemeOption, React.JSX.Element> = {
   light: <IoSunny />,
   dark: <IoMoon />,
   system: <IoCogSharp />,
@@ -24,7 +24,7 @@ const ThemeIcons: Record<ThemeOption, React.JSX.Element> = {
 
 function Header() {
   const { data: globals } = useGlobals();
-  const { themeOption, setTheme } = useThemeContext();
+  const { theme, themeOption, setTheme } = useThemeContext();
   const [isOpenThemePicker, setIsOpenThemePicker] = React.useState(false);
 
   function handleThemePicker(option: ThemeOption) {
@@ -55,7 +55,7 @@ function Header() {
       <Popover
         placement="bottom-end"
         onOpenChange={onOpenChange}
-        backdrop="blur"
+        // backdrop="blur"
         isOpen={isOpenThemePicker}
       >
         <PopoverTrigger>
@@ -65,7 +65,7 @@ function Header() {
             className="text-2xl"
             aria-label="Select a theme"
           >
-            <IoContrast />
+            {themeIcons[theme]}
           </Button>
         </PopoverTrigger>
 
@@ -79,7 +79,7 @@ function Header() {
                 onClick={() => handleThemePicker(option)}
                 variant={themeOption === option ? "shadow" : "flat"}
               >
-                {ThemeIcons[option]} {option}
+                {themeIcons[option]} {option}
               </Button>
             ))}
           </div>

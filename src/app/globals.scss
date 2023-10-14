@@ -2,9 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
+  html {
+    font-size: 14px;
+  }
   body {
     min-height: 100vh;
   }
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
 }

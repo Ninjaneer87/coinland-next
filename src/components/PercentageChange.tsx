@@ -1,5 +1,6 @@
 import { useFormatter } from "next-intl";
 import React from "react";
+import { IoCaretDownSharp, IoCaretUpSharp } from "react-icons/io5";
 
 type Props = {
   percentageChange: number;
@@ -12,7 +13,11 @@ const PercentageChange = ({ percentageChange }: Props) => {
     style: "percent",
     maximumFractionDigits: 2,
   });
-  const caret = isPositive ? <span>&#x25B4;</span> : <span>&#x25BE;</span>;
+  const caret = isPositive ? (
+    <IoCaretUpSharp />
+  ) : (
+    <IoCaretDownSharp />
+  );
 
   return (
     <span
@@ -20,7 +25,7 @@ const PercentageChange = ({ percentageChange }: Props) => {
         isPositive
           ? "text-green-500 bg-green-200/20"
           : "text-red-500 bg-red-200/20"
-      } rounded-md p-1 whitespace-nowrap`}
+      } rounded-md p-1 whitespace-nowrap inline-flex items-center gap-1`}
     >
       {caret} {formattedPercentageChange}
     </span>

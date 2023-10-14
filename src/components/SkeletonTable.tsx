@@ -19,7 +19,7 @@ function SkeletonTable({ numberOfRows }: Props) {
   return (
     <>
       {rows.map((row) => (
-        <Skeleton key={row.id} className="h-10 w-full rounded-lg" />
+        <Skeleton key={row.id} className="h-20 w-full rounded-lg my-2" />
       ))}
     </>
   );

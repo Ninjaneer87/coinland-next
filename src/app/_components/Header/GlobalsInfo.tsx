@@ -1,6 +1,6 @@
 import PercentageChange from "@/components/PercentageChange";
 import { DOMINANCE_FORMAT_OPTIONS, USD_FORMAT_OPTIONS } from "@/utils/common";
-import { NumberFormatOptions, useFormatter } from "next-intl";
+import { useFormatter } from "next-intl";
 import React from "react";
 
 type Props = {
@@ -35,7 +35,7 @@ function GlobalsInfo({ globals }: Props) {
   );
 
   return (
-    <ul className="flex flex-wrap gap-4 text-xs w-full justify-centers">
+    <ul className="flex flex-wrap gap-4 text-xs w-full justify-center items-center">
       <li>
         Coins: <span className="text-primary">{formattedActiveCryptos}</span>
       </li>

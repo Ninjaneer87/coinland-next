@@ -9,6 +9,7 @@ import { useDarkMode } from "@/hooks/useDarkMode";
 import { NextIntlClientProvider } from "next-intl";
 import { useTheme } from "@/hooks/useTheme";
 import { Theme, ThemeOption } from "@/utils/constants";
+import { MediaQueryContextProvider } from "@/context/mediaQueryContext";
 
 type Props = {
   serverTheme: Theme;
@@ -25,13 +26,15 @@ function ClientProviders({ children, serverTheme, serverThemeOption }: Props) {
 
   return (
     <QueryClientProvider client={client}>
-      <ThemeContext.Provider value={{ theme, themeOption, setTheme }}>
-        <NextUIProvider>
-          <NextIntlClientProvider locale="en">
-            <>{children}</>
-          </NextIntlClientProvider>
-        </NextUIProvider>
-      </ThemeContext.Provider>
+      <MediaQueryContextProvider>
+        <ThemeContext.Provider value={{ theme, themeOption, setTheme }}>
+          <NextUIProvider>
+            <NextIntlClientProvider locale="en">
+              <>{children}</>
+            </NextIntlClientProvider>
+          </NextUIProvider>
+        </ThemeContext.Provider>
+      </MediaQueryContextProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
