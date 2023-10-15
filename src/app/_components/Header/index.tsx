@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { useThemeContext } from "@/context/themeContext";
 import GlobalsInfo from "./GlobalsInfo";
-import { IoSunny, IoMoon, IoContrast, IoCogSharp } from "react-icons/io5";
+import { IoSunny, IoMoon, IoContrast, IoLaptop } from "react-icons/io5";
 import {
   Divider,
   Popover,
@@ -18,7 +18,7 @@ import { THEME_OPTIONS, ThemeOption } from "@/utils/constants";
 const themeIcons: Record<ThemeOption, React.JSX.Element> = {
   light: <IoSunny />,
   dark: <IoMoon />,
-  system: <IoCogSharp />,
+  system: <IoLaptop />,
 };
 
 function Header() {
@@ -61,15 +61,25 @@ function Header() {
             className="text-2xl"
             aria-label="Select a theme"
           >
-            {themeIcons[theme]}
+            <span
+              className={`transition-transform ${
+                isOpenThemePicker ? "rotate-[360deg]" : ""
+              }`}
+            >
+              {themeIcons[theme]}
+            </span>
           </Button>
         </PopoverTrigger>
 
         <PopoverContent>
-          <div className="flex flex-col gap-4 text-start py-4">
+          <div className="flex flex-col gap-4 text-start py-4 min-w-[120px]">
+            <div>Select color mode</div>
+            <Divider />
             {THEME_OPTIONS.map((option) => (
               <Button
-                className="capitalize flex-grow bg-transparent justify-start"
+                className={`capitalize flex-grow bg-transparent justify-start ${
+                  themeOption === option ? "text-primary" : ""
+                }`}
                 key={option}
                 aria-label={`Switch the theme`}
                 onClick={() => handleThemePicker(option)}

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import {
@@ -13,11 +14,12 @@ import useCoins from "@/hooks/query/useCoins";
 import { useCoinsPagination } from "@/hooks/useCoinsPagination";
 import NoSSR from "@/components/NoSSR";
 import SkeletonTable from "@/components/SkeletonTable";
-import { Pagination } from "@nextui-org/react";
+import { Pagination, Tooltip } from "@nextui-org/react";
 import PaginationItem from "@/components/PaginationItem";
 import { useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useMediaQueryContext } from "@/context/mediaQueryContext";
+import { IoInformationCircle } from "react-icons/io5";
 
 const columnItems = [
   {
@@ -54,6 +56,15 @@ const columnItems = [
     size: 150,
     maxSize: 150,
     minSize: 150,
+    tooltipContent: (
+      <>
+        The total market value of a cryptocurrency's circulating supply. It is
+        analogous to the free-float capitalization in the stock market.
+        <br />
+        <br />
+        Market Cap = Current Price x Circulating Supply.
+      </>
+    ),
   },
   {
     header: "24h Volume",
@@ -61,6 +72,12 @@ const columnItems = [
     size: 220,
     maxSize: 220,
     minSize: 220,
+    tooltipContent: (
+      <>
+        A measure of how much of a cryptocurrency was traded in the last 24
+        hours.
+      </>
+    ),
   },
   {
     header: "Circulating Supply",
@@ -68,6 +85,12 @@ const columnItems = [
     size: 260,
     maxSize: 260,
     minSize: 260,
+    tooltipContent: (
+      <>
+        The amount of coins that are circulating in the market and are in public
+        hands. It is analogous to the flowing shares in the stock market.
+      </>
+    ),
   },
   {
     header: "Last 7 Days",
@@ -76,15 +99,38 @@ const columnItems = [
     maxSize: 200,
     minSize: 200,
   },
-] as const;
+];
 
 const columns: ColumnDef<Partial<CoinItem>>[] = columnItems.map(
-  ({ accessorKey, header, size, maxSize, minSize }) => ({
+  ({ accessorKey, header, size, maxSize, minSize, tooltipContent }) => ({
     header: () => (
       <div
-        className={`p-2 ${accessorKey === "name" ? "text-start" : "text-end"}`}
+        className={`p-2 flex gap-2 items-center ${
+          accessorKey === "name" ? "justify-start" : "justify-end"
+        }`}
       >
-        {header}
+        {header}{" "}
+        {tooltipContent && (
+          <Tooltip
+            color="default"
+            // delay={500}
+            placement="bottom"
+            showArrow
+            classNames={{
+              base: 'border border-foreground/5 border-solid',
+              arrow: 'border border-foreground/5 border-solid'
+            }}
+            content={
+              <div className="max-w-[300px] px-2 py-4">
+                {tooltipContent}
+              </div>
+            }
+          >
+            <div>
+              <IoInformationCircle />
+            </div>
+          </Tooltip>
+        )}
       </div>
     ),
     accessorKey,
@@ -245,7 +291,7 @@ function CoinsTable() {
                             ...(isStickyIndex && { left: leftPosition }),
                           }}
                           className={`bg-background ${
-                            isStickyIndex ? "sticky" : ""
+                            isStickyIndex ? "sticky z-10" : ""
                           } ${
                             isStickyIndex &&
                             isTableScrolledRight &&

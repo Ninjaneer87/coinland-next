@@ -7,9 +7,10 @@ import Image from "next/image";
 import { USD_FORMAT_OPTIONS, checkImageUrl } from "@/utils/common";
 import PercentageChange from "@/components/PercentageChange";
 import { useFormatter } from "next-intl";
-import Sparkline from "./Sparkline";
+import SparklineCell from "./SparklineCell";
 import { Tooltip } from "@nextui-org/react";
 import { useMediaQueryContext } from "@/context/mediaQueryContext";
+import CirculatingSupplyCell from "./CirculatingSupplyCell";
 
 type Props = {
   coinItem: Partial<CoinItem>;
@@ -28,7 +29,7 @@ function CoinItemCell({ coinItem, columnKey }: Props) {
       return (
         <Link
           href={ROUTES.COIN(coinItem.id!)}
-          className="flex gap-3 items-center"
+          className="flex gap-3 items-center hover:text-primary transition-colors"
         >
           <Image
             src={checkImageUrl(coinItem.image!)}
@@ -37,19 +38,33 @@ function CoinItemCell({ coinItem, columnKey }: Props) {
             width={48}
             height={48}
           />
-          <span>{coinItem.name}</span>
+          <div>
+            <div>{coinItem.name}</div>
+            <div className="text-foreground/50">
+              {coinItem.symbol!.toUpperCase()}
+            </div>
+          </div>
         </Link>
       );
 
     case "current_price":
       const formattedPrice = number(coinItem[columnKey]!, USD_FORMAT_OPTIONS);
       const priceEl = <span className="block truncate">{formattedPrice}</span>;
-      return formattedPrice.length > 12 ? (
-        <Tooltip color="primary" content={formattedPrice}>
+      return (
+        <Tooltip
+          hidden={formattedPrice.length < 12}
+          color="default"
+          classNames={{
+            base: "border border-foreground/5 border-solid",
+            arrow: "border border-foreground/5 border-solid",
+          }}
+          content={<div className="p-2">{formattedPrice}</div>}
+          showArrow
+          placement="bottom"
+          delay={300}
+        >
           {priceEl}
         </Tooltip>
-      ) : (
-        priceEl
       );
 
     case "price_change_percentage_24h":
@@ -62,7 +77,7 @@ function CoinItemCell({ coinItem, columnKey }: Props) {
       return (
         <div>
           <div>{number(coinItem[columnKey]!, USD_FORMAT_OPTIONS)}</div>
-          <div className="text-foreground/60 text-xs mt-1">
+          <div className="text-foreground/50 text-xs mt-1">
             {number(coinItem[columnKey]! / coinItem.current_price!, {
               notation: "standard",
               maximumFractionDigits: 0,
@@ -73,20 +88,12 @@ function CoinItemCell({ coinItem, columnKey }: Props) {
       );
 
     case "circulating_supply":
-      return (
-        <>
-          {number(coinItem[columnKey]!, {
-            notation: "standard",
-            maximumFractionDigits: 0,
-          })}{" "}
-          <span className="text-foreground/50">
-            {coinItem.symbol!.toUpperCase()}
-          </span>
-        </>
-      );
+      return <CirculatingSupplyCell coinItem={coinItem} number={number} />;
 
     case "sparkline_in_7d":
-      return <Sparkline data={coinItem[columnKey]!.price} key={`${maxMD}`} />;
+      return (
+        <SparklineCell data={coinItem[columnKey]!.price} key={`${maxMD}`} />
+      );
 
     default:
       return null;

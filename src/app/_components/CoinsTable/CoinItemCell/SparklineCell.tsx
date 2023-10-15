@@ -6,7 +6,7 @@ import { useMediaQueryContext } from "@/context/mediaQueryContext";
 type Props = {
   data: number[];
 };
-function Sparkline({ data }: Props) {
+function SparklineCell({ data }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const minNum = useMemo(() => Math.min(...data), [data]);
   const maxNum = useMemo(() => Math.max(...data), [data]);
@@ -14,8 +14,8 @@ function Sparkline({ data }: Props) {
   const { maxMD } = useMediaQueryContext();
 
   useEffect(() => {
-    const w = maxMD ? 90 : 180;
-    const h = maxMD ? 40 : 70;
+    const w = maxMD ? 120 : 180;
+    const h = maxMD ? 50 : 70;
     const svg = d3
       .select(svgRef.current)
       .attr("width", w)
@@ -60,4 +60,4 @@ function Sparkline({ data }: Props) {
   );
 }
 
-export default memo(Sparkline);
+export default memo(SparklineCell);
