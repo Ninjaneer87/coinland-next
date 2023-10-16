@@ -14,12 +14,13 @@ import useCoins from "@/hooks/query/useCoins";
 import { useCoinsPagination } from "@/hooks/useCoinsPagination";
 import NoSSR from "@/components/NoSSR";
 import SkeletonTable from "@/components/SkeletonTable";
-import { Pagination, Tooltip } from "@nextui-org/react";
+import { Divider, Pagination, Tooltip } from "@nextui-org/react";
 import PaginationItem from "@/components/PaginationItem";
 import { useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useMediaQueryContext } from "@/context/mediaQueryContext";
 import { IoInformationCircle } from "react-icons/io5";
+import GradientDivider from "@/components/GradientDivider";
 
 const columnItems = [
   {
@@ -46,9 +47,9 @@ const columnItems = [
   {
     header: "24h %",
     accessorKey: "price_change_percentage_24h",
-    size: 80,
-    maxSize: 80,
-    minSize: 80,
+    size: 110,
+    maxSize: 110,
+    minSize: 110,
   },
   {
     header: "Market Cap",
@@ -113,17 +114,14 @@ const columns: ColumnDef<Partial<CoinItem>>[] = columnItems.map(
         {tooltipContent && (
           <Tooltip
             color="default"
-            // delay={500}
             placement="bottom"
             showArrow
             classNames={{
-              base: 'border border-foreground/5 border-solid',
-              arrow: 'border border-foreground/5 border-solid'
+              base: "border border-foreground/5 border-solid",
+              arrow: "border border-foreground/5 border-solid",
             }}
             content={
-              <div className="max-w-[300px] px-2 py-4">
-                {tooltipContent}
-              </div>
+              <div className="max-w-[300px] px-2 py-4">{tooltipContent}</div>
             }
           >
             <div>
@@ -145,14 +143,14 @@ const columns: ColumnDef<Partial<CoinItem>>[] = columnItems.map(
 );
 
 function CoinsTable() {
-  const { data: coins, isLoading } = useCoins();
+  const { data: coins } = useCoins();
   const { totalPages, pageParam } = useCoinsPagination();
   const [sorting, setSorting] = useState<SortingState>([]);
   const { ref: theadRef, inView: theadInView } = useInView({
     threshold: 0,
     initialInView: true,
   });
-  const fixedHeaderRef = useRef<HTMLTableSectionElement>(null);
+  const fixedTheadRef = useRef<HTMLTableSectionElement>(null);
   const [tableScrollLeft, setTableScrollLeft] = useState(0);
   const isTableScrolledRight = tableScrollLeft > 0;
   const { maxMD } = useMediaQueryContext();
@@ -169,66 +167,74 @@ function CoinsTable() {
     state: { sorting },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    debugTable: true,
   });
 
   if (coins?.status?.error_code === 429) {
     return <h1>Too many requests :(</h1>;
   }
 
-  if (isLoading) {
-    return <SkeletonTable numberOfRows={20} />;
-  }
-
   const tableHeadContent = table.getHeaderGroups().map((headerGroup) => (
-    <tr key={headerGroup.id}>
-      {headerGroup.headers.map((header, thIndex) => {
-        const isStickyIndex = [0, 1].includes(thIndex);
-        const { size, minSize, maxSize } = columnItems[thIndex];
-        const leftPosition = [...Array(thIndex).keys()].reduce((acc, curr) => {
-          const { size } = columnItems[curr];
-          return acc + size;
-        }, 0);
-        const isLastStickyIndex = thIndex === 1;
+    <>
+      <tr key={headerGroup.id}>
+        {headerGroup.headers.map((header, thIndex) => {
+          const isStickyIndex = [0, 1].includes(thIndex);
+          const { size, minSize, maxSize } = columnItems[thIndex];
+          const leftPosition = [...Array(thIndex).keys()].reduce(
+            (acc, curr) => {
+              const { size } = columnItems[curr];
+              return acc + size;
+            },
+            0
+          );
+          const isLastStickyIndex = thIndex === 1;
 
-        return (
-          <th
-            key={header.id}
-            colSpan={header.colSpan}
-            style={{
-              width: isLastStickyIndex && maxMD ? size - 50 : size,
-              minWidth: isLastStickyIndex && maxMD ? minSize - 50 : minSize,
-              maxWidth: isLastStickyIndex && maxMD ? maxSize - 50 : maxSize,
-              ...(isStickyIndex && { left: leftPosition }),
-              ...(!isStickyIndex &&
-                !theadInView && {
-                  transform: `translateX(${-tableScrollLeft}px)`,
-                }),
-            }}
-            className={`z-30 bg-background ${isStickyIndex ? " sticky" : ""} ${
-              isStickyIndex && isTableScrolledRight && isLastStickyIndex
-                ? "relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-[1px] after:bg-primary"
-                : ""
-            }`}
-          >
-            {header.isPlaceholder ? null : (
-              <div
-                className={`py-2 
+          return (
+            <th
+              key={header.id}
+              colSpan={header.colSpan}
+              style={{
+                width: isLastStickyIndex && maxMD ? size - 50 : size,
+                minWidth: isLastStickyIndex && maxMD ? minSize - 50 : minSize,
+                maxWidth: isLastStickyIndex && maxMD ? maxSize - 50 : maxSize,
+                ...(isStickyIndex && { left: leftPosition }),
+                ...(!isStickyIndex &&
+                  !theadInView && {
+                    transform: `translateX(${-tableScrollLeft}px)`,
+                  }),
+              }}
+              className={`z-30 bg-background ${
+                isStickyIndex ? " sticky" : ""
+              } ${
+                isStickyIndex && isTableScrolledRight && isLastStickyIndex
+                  ? "relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-[1px] after:bg-primary"
+                  : ""
+              }`}
+            >
+              {header.isPlaceholder ? null : (
+                <div
+                  className={`py-2 
                 ${
                   header.column.getCanSort() ? "cursor-pointer select-none" : ""
                 }`}
-                onClick={header.column.getToggleSortingHandler()}
-              >
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </div>
-            )}
-          </th>
-        );
-      })}
-    </tr>
+                  onClick={header.column.getToggleSortingHandler()}
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </div>
+              )}
+            </th>
+          );
+        })}
+      </tr>
+
+      <tr>
+        <th colSpan={columnItems.length}>
+          <GradientDivider />
+        </th>
+      </tr>
+    </>
   ));
 
   return (
@@ -243,18 +249,18 @@ function CoinsTable() {
                 !theadInView
                   ? "opacity-0 pointer-events-none"
                   : "opacity-1 pointer-events-auto"
-              } bg-background text-primary transition-opacity duration-300 border-b-1 border-primary`}
+              } bg-background text-primary transition-opacity duration-300`}
             >
               {tableHeadContent}
             </thead>
 
             <thead
-              ref={fixedHeaderRef}
+              ref={fixedTheadRef}
               className={`${
                 theadInView
                   ? "opacity-0 pointer-events-none"
                   : "opacity-1 pointer-events-auto"
-              } fixed top-0 bg-background text-primary transition-opacity duration-300 z-20 overflow-x-scroll hide-scrollbar border-b-1 border-primary`}
+              } bg-background text-primary transition-opacity duration-300 fixed top-0 z-20`}
             >
               {tableHeadContent}
             </thead>
@@ -306,7 +312,7 @@ function CoinsTable() {
                               cell.column.columnDef.id === "name"
                                 ? "text-start"
                                 : "text-end"
-                            }${rowIndex === 0 ? " pt-4" : ""}
+                            } ${rowIndex === 0 ? "pt-4" : ""}
                             `}
                           >
                             {flexRender(
@@ -324,16 +330,19 @@ function CoinsTable() {
           </table>
         </div>
 
-        <Pagination
-          showControls
-          disableAnimation
-          color="default"
-          total={totalPages}
-          page={pageParam || 1}
-          className="gap-2 sticky bottom-0 z-20 bg-background w-fit mx-auto mt-4 border-t-1 border-primary"
-          renderItem={PaginationItem}
-          size={maxMD ? "sm" : "md"}
-        />
+        <div className="mx-auto mt-4 w-fit sticky bottom-0 z-20">
+          <GradientDivider />
+          <Pagination
+            showControls
+            disableAnimation
+            color="default"
+            total={totalPages}
+            page={pageParam || 1}
+            className="gap-2 bg-background w-fit m-0"
+            renderItem={PaginationItem}
+            size={maxMD ? "sm" : "md"}
+          />
+        </div>
       </NoSSR>
     </>
   );

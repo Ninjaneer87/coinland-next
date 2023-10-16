@@ -35,10 +35,12 @@ function CirculatingSupplyCell({ coinItem, number }: Props) {
           </div>
 
           <Progress
-            color="default"
             aria-label="Loading..."
             size="sm"
             value={(coinItem.circulating_supply! / coinItem.max_supply!) * 100}
+            classNames={{
+              indicator: "bg-gradient-to-r from-transparent to-primary bg-transparent",
+            }}
           />
 
           <div className="flex items-center justify-between">
@@ -78,10 +80,12 @@ function CirculatingSupplyCell({ coinItem, number }: Props) {
         {coinItem.circulating_supply && coinItem.max_supply && (
           <Progress
             className="mt-2 max-w-[180px]"
-            color="default"
             aria-label="Loading..."
             size="sm"
             value={(coinItem.circulating_supply / coinItem.max_supply) * 100}
+            classNames={{
+              indicator: "bg-gradient-to-r from-transparent to-primary bg-transparent",
+            }}
           />
         )}
       </div>
